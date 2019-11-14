@@ -136,4 +136,6 @@ PHENOTYPE_REDIRECT_URL = "https://monarchinitiative.org/analyze/phenotypes"
 OIDC_SESSION_MANAGEMENT_ENABLE = True
 SITE_URL = 'http://localhost:8000'
 
+LOGIN_REDIRECT_URL = '/login_apps/'
+
 

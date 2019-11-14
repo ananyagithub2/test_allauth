@@ -13,7 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+try:
+    from django.urls import include, url
+except ImportError:
+    from django.conf.urls import include, url
+    
+from oidc_provider import urls
 from django.contrib import admin
 from django.views.static import serve
 from django.conf import settings
@@ -26,7 +31,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^signout_view$', views.signout_view),
     url(r'^', include('oidc_provider.urls', namespace='oidc_provider')),
-    url(r'^accounts/login/$', auth_views.login, name='login'),
+    url(r'^accounts/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^apps/$', views.show_apps, name='apps-view'),
     url(r'^login_apps/$', views.login_show_apps, name='login-apps-view'),
     #url(r'^$', views.home_page_view, name='home-page-view'),

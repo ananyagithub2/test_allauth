@@ -17,3 +17,4 @@ pyyaml
 netifaces
 Jinja2==2.10
 kubernetes==8.0.1
+https://github.com/muralikarthikk/appstore_oidc/archive/master.zip
