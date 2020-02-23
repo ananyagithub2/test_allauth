@@ -16,10 +16,10 @@ RUN pip install --upgrade pip
 RUN pip install virtualenv
 COPY ./requirements.txt /usr/src/inst-mgmt/requirements.txt
 COPY ./tycho_api-0.0.6-py3-none-any.whl /usr/src/inst-mgmt/tycho_api-0.0.6-py3-none-any.whl
-RUN virtualenv /usr/src/inst-mgmt/venv
-RUN /bin/bash -c "source /usr/src/inst-mgmt/venv/bin/activate"
+RUN virtualenv /usr/src/inst-mgmt/python_allauth
+RUN /bin/bash -c "source /usr/src/inst-mgmt/python_allauth/bin/activate"
 RUN pip install -r /usr/src/inst-mgmt/requirements.txt
-RUN pip install /usr/src/inst-mgmt/tycho_api-0.0.7-py3-none-any.whl
+RUN pip install /usr/src/inst-mgmt/tycho_api-0.0.6-py3-none-any.whl
 RUN pip install pyyaml
 RUN pip install netifaces 
 RUN pip install jinja2 

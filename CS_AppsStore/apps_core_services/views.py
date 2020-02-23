@@ -6,9 +6,34 @@ from django.apps import apps
 
 from apps_core_services.utils import check_authorization, authenticate_user
 
+from allauth.socialaccount.providers.github.views import GitHubOAuth2Adapter
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from rest_auth.registration.views import SocialLoginView
 
 # Create your views here.
 
+class GithubLogin(SocialLoginView):
+    adapter_class = GitHubOAuth2Adapter
+    callback_url = "http://127.0.0.1:8000/accounts/github/login/callback/"
+    client_class = OAuth2Client
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    client_class = OAuth2Client
+    callback_url = "http://127.0.0.1:8000/accounts/google/login/callback/"
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+
+class AppsStore_JWT(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        content = {'message': 'Testing AppsStore JWT Token Creation!'}
+        return Response(content)
 
 def home_page_view(request):
     auth_resp = check_authorization(request)
@@ -29,6 +54,11 @@ def signout_view(request):
 
 @login_required
 def login_show_apps(request):
+    print(f"~~~~~REQUEST: {request.GET}, {request.META}")
+    try:
+       print(f"REQUEST USER: {request.user.username}, {request.user.email}")
+    except Exception as e:
+       pass
     apps_list = []
 
     for app_conf in apps.get_app_configs():

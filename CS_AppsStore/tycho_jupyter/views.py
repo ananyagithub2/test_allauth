@@ -15,6 +15,8 @@ from tycho_jupyter import deployment
 def login_start(request):
     # view function when the start action is triggered from CommonsShare Apps Store from
     # which the user has already logged in to CommonsShare Apps Store directly
+    #if "REMOTE_USER" in request.META:
+    #request.session['REMOTE_USER'] = request.META["REMOTE_USER"]
     redirect_url = deploy(request)
     return HttpResponseRedirect(redirect_url)
 
@@ -32,9 +34,11 @@ def start(request):
 
 @login_required
 def deploy(request):
-    print("deploying service...")
+    print ("Deploying service ...")
+    if "REMOTE_USER" in request.META:
+    	request.session['REMOTE_USER'] = request.META["REMOTE_USER"]
     try:
-        redirect_url = deployment.deploy()
+        redirect_url = deployment.deploy(request)
     except Exception as ex:
         return JsonResponse(data={'invalid ip_address or port from jupyter-datasacience deployment ': ex},
                             status=HTTP_500_INTERNAL_SERVER_ERROR)
